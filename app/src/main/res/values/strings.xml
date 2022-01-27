@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">MyAlarmApp</string>
+    <string name="txt_hello">Hello,</string>
+    <string name="txt_welcome">Welcome in Smart Alarm</string>
+    <string name="txt_time_today">13.05</string>
+    <string name="txt_date_today">Sun, 26 December 2021</string>
+    <string name="txt_set_reminder">Set Your Reminder</string>
+    <string name="txt_set">Set</string>
+    <string name="txt_one_time_alarm">One Time Alarm</string>
+    <string name="txt_repeating_alarm">Repeating Alarm</string>
+    <string name="txt_your_alarm">Your Alarm</string>
+    <string name="txt_set_date">Set Date</string>
+    <string name="txt_set_time">Set Time</string>
+    <string name="txt_note">Note</string>
+    <string name="txt_add_set_alarm">Add Set Alarm</string>
+    <string name="txt_cancel_set_alarm">Cancel</string>
+    <string name="txt_input_note">Input Your Note</string>
+    <string name="image_icon_one_time_alarm">Image Icon one time alarm</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="time_rv">09.30</string>
+    <string name="team_meeting">Team Meeting</string>
+    <string name="row_date">Sen, 27 December 2021</string>
+    <string name="image_icon_repeating_alarm">Image icon repeating alarm</string>
+    <string name="txt_date">Date</string>
+    <string name="txt_time">Time</string>
+    <string name="txt_input_your_note">Input Your Note</string>
+    <string name="txt_cancel">Cancel</string>
+    <string name="txt_clock">14:13</string>
+    <string name="txt_toast_add_alarm"><![CDATA[Please set Date & Time]]></string>
+</resources>
