@@ -11,6 +11,7 @@ import com.alif.smartalarm.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +26,9 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         CoroutineScope(Dispatchers.IO).launch {
             val alarm = db.alarmDao().getAlarm()
-            alarmAdapter?.setData(alarm)
+            withContext(Dispatchers.Main) {
+                alarmAdapter?.setData(alarm)
+            }
             Log.i("GetAlarm", "setupRecyclerView: with this data $alarm")//background thread
         }
     }
@@ -43,11 +46,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         binding.apply {
-            CoroutineScope(Dispatchers.IO).launch {
-                val alarm = db.alarmDao().getAlarm()
-                alarmAdapter?.setData(alarm)
-                Log.i("GetAlarm", "setupWithRecyclerView: with this data $alarm")
-            }
+            alarmAdapter = AlarmAdapter()
             rvReminderAlarm.apply {
                 layoutManager = LinearLayoutManager(context)
                 adapter = alarmAdapter
