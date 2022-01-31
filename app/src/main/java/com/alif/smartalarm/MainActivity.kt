@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alif.smartalarm.adapter.AlarmAdapter
 import com.alif.smartalarm.data.local.AlarmDB
 import com.alif.smartalarm.databinding.ActivityMainBinding
@@ -24,13 +26,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        CoroutineScope(Dispatchers.IO).launch {
-            val alarm = db.alarmDao().getAlarm()
-            withContext(Dispatchers.Main) {
-                alarmAdapter?.setData(alarm)
-            }
-            Log.i("GetAlarm", "setupRecyclerView: with this data $alarm")//background thread
+
+        db.alarmDao().getAlarm().observe(this){
+            alarmAdapter?.setData(it)
+            Log.i("GetAlarm", "setupRecyclerView: with this data $it")
         }
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            val alarm = db.alarmDao().getAlarm()
+//            withContext(Dispatchers.Main) {
+//                alarmAdapter?.setData(alarm)
+//            }
+//            Log.i("GetAlarm", "setupRecyclerView: with this data $alarm")//background thread
+//        }
     }
 
 
@@ -51,6 +59,7 @@ class MainActivity : AppCompatActivity() {
                 layoutManager = LinearLayoutManager(context)
                 adapter = alarmAdapter
             }
+            swipeToDelete(rvReminderAlarm)
         }
     }
 
@@ -64,6 +73,31 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this@MainActivity, RepeatingAlarmActivity::class.java))
             }
         }
+    }
+
+    private fun swipeToDelete(recyclerView: RecyclerView) {
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val deletedItem = alarmAdapter?.listAlarm?.get(viewHolder.adapterPosition)
+                CoroutineScope(Dispatchers.IO).launch {
+                    deletedItem?.let { db.alarmDao().deleteAlarm(it) }
+                    Log.i("DeleteAlarm", "onSwiped: succes deleted alarm with $deletedItem")
+                }
+//                alarmAdapter?.notifyItemRemoved(viewHolder.adapterPosition)
+            }
+        }
+        ).attachToRecyclerView(recyclerView)
     }
 
 //        dinonaktifkan karena sudah mendapatkan live tanggal nya di xml
