@@ -65,6 +65,10 @@ class OneTimeAlarmActivity : AppCompatActivity(), DateDialogFragment.DialogDateS
                     finish()
                 }
             }
+
+            btnCancel.setOnClickListener {
+                finish()
+            }
         }
     }
 
