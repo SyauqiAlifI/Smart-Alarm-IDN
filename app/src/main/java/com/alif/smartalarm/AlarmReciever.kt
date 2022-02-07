@@ -26,7 +26,7 @@ class AlarmReciever : BroadcastReceiver(){
     fun setOneTimeAlarm(context: Context, type: Int, date: String, time: String, message: String) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReciever::class.java)
-        intent.putExtra("sesuatu", message)
+        intent.putExtra("message", message)
         intent.putExtra("type", type)
         Log.e("ErrorSetOneTimeAlarm", "setOneTimeAlarm: $date $time")
 
@@ -39,7 +39,7 @@ class AlarmReciever : BroadcastReceiver(){
         val calendar = Calendar.getInstance()
         //  date
         calendar.set(Calendar.DAY_OF_MONTH, converterData(dateArray)[0])
-        calendar.set(Calendar.MONTH, converterData(dateArray)[1])
+        calendar.set(Calendar.MONTH, converterData(dateArray)[1]-1)
         calendar.set(Calendar.YEAR, converterData(dateArray)[2])
         //  time
         calendar.set(Calendar.HOUR, converterData(timeArray)[0])
@@ -49,6 +49,30 @@ class AlarmReciever : BroadcastReceiver(){
         val pendingIntent = PendingIntent.getBroadcast(context, 101, intent, 0)
         alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
         Toast.makeText(context, "Success Set One Time Alarm", Toast.LENGTH_SHORT).show()
+        Log.i("setAlarmNotification", "setOneTimeAlarm: Alarm will rings on ${calendar.time}")
+    }
+
+    fun setRepeatingAlarm(context: Context?, type: Int, time: String, message: String) {
+        val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(context, AlarmReciever::class.java)
+        intent.putExtra("message", message)
+        intent.putExtra("type", type)
+
+        val timeArray = time.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeArray[0]))
+        calendar.set(Calendar.MINUTE, Integer.parseInt(timeArray[1]))
+        calendar.set(Calendar.SECOND, 0)
+
+        val pendingIntent = PendingIntent.getBroadcast(context, 102, intent, 0)
+        alarmManager.setInexactRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+        Toast.makeText(context, "Success Set Up Repeating Alarm", Toast.LENGTH_SHORT).show()
     }
 
     fun converterData(array: Array<String>) : List<Int> {
