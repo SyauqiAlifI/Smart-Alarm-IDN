@@ -32,19 +32,18 @@ class MainActivity : AppCompatActivity() {
             Log.i("GetAlarm", "setupRecyclerView: with this data $it")
         }
 
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val alarm = db.alarmDao().getAlarm()
-//            withContext(Dispatchers.Main) {
-//                alarmAdapter?.setData(alarm)
-//            }
-//            Log.i("GetAlarm", "setupRecyclerView: with this data $alarm")//background thread
-//        }
+        /*CoroutineScope(Dispatchers.IO).launch {
+            val alarm = db.alarmDao().getAlarm()
+            withContext(Dispatchers.Main) {
+                alarmAdapter?.setData(alarm)
+            }
+            Log.i("GetAlarm", "setupRecyclerView: with this data $alarm")//background thread
+        }*/
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -100,22 +99,22 @@ class MainActivity : AppCompatActivity() {
         ).attachToRecyclerView(recyclerView)
     }
 
-//        dinonaktifkan karena sudah mendapatkan live tanggal nya di xml
-//    private fun initDateToday(){
-//        val calendar = Calendar.getInstance()
-//        val dateFormat = SimpleDateFormat("E, dd MMMM yyyy", Locale.getDefault())
-//        val formattedDate = dateFormat.format(calendar.time)
-//
-//        binding.tvDateToday.text = formattedDate
-//    }
-//
-//    private fun initTimeToday() {
-//        //calendar untuk mendapatkan segala hal yang berhubungan dengan waktu di android
-//        val calendar = Calendar.getInstance()
-//        // menentukan format jam yang akan digunakan, contohnya 13:36 atau 01:36 p.m atau 13:36:60
-//        val timeFormat = SimpleDateFormat("hh:mm aa", Locale.getDefault())
-//        val formattedTime = timeFormat.format(calendar.time)
-//
-//        binding.tvTimeToday.text = formattedTime
-//    }
+        /*dinonaktifkan karena sudah mendapatkan live tanggal nya di xml
+    private fun initDateToday(){
+        val calendar = Calendar.getInstance()
+        val dateFormat = SimpleDateFormat("E, dd MMMM yyyy", Locale.getDefault())
+        val formattedDate = dateFormat.format(calendar.time)
+
+        binding.tvDateToday.text = formattedDate
+    }
+
+    private fun initTimeToday() {
+        //calendar untuk mendapatkan segala hal yang berhubungan dengan waktu di android
+        val calendar = Calendar.getInstance()
+        // menentukan format jam yang akan digunakan, contohnya 13:36 atau 01:36 p.m atau 13:36:60
+        val timeFormat = SimpleDateFormat("hh:mm aa", Locale.getDefault())
+        val formattedTime = timeFormat.format(calendar.time)
+
+        binding.tvTimeToday.text = formattedTime
+    }*/
 }
